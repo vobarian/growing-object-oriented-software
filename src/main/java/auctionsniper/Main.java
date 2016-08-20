@@ -53,6 +53,11 @@ public class Main implements AuctionEventListener {
         });
     }
 
+    @Override
+    public void currentPrice(int price, int increment) {
+
+    }
+
     private void disconnectWhenUICloses(final XMPPConnection connection) {
         ui.addWindowListener(new WindowAdapter() {
             @Override
