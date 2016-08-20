@@ -1,3 +1,6 @@
+package test.auctionsniper;
+
+import auctionsniper.MainWindow;
 import com.objogate.wl.swing.AWTEventQueueProber;
 import com.objogate.wl.swing.driver.JFrameDriver;
 import com.objogate.wl.swing.driver.JLabelDriver;
