@@ -1,5 +1,7 @@
 package auctionsniper;
 
+import auctionsniper.AuctionEventListener.PriceSource;
+
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.MessageListener;
 import org.jivesoftware.smack.packet.Message;
@@ -10,7 +12,7 @@ import java.util.Map;
 public class AuctionMessageTranslator implements MessageListener {
     private final AuctionEventListener listener;
 
-    public AuctionMessageTranslator(AuctionEventListener listener) {
+    public AuctionMessageTranslator(String sniperId, AuctionEventListener listener) {
         this.listener = listener;
     }
 
@@ -22,7 +24,8 @@ public class AuctionMessageTranslator implements MessageListener {
         if ("CLOSE".equals(eventType)) {
             listener.auctionClosed();
         } else if ("PRICE".equals(eventType)) {
-            listener.currentPrice(event.currentPrice(), event.increment());
+            listener.currentPrice(event.currentPrice(), event.increment(),
+                    PriceSource.FromOtherBidder);
         }
     }
 
