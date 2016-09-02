@@ -92,6 +92,7 @@ public class Main {
 
         @Override
         public void sniperWon() {
+            showStatus(MainWindow.STATUS_WON);
         }
 
         private void showStatus(final String status) {
