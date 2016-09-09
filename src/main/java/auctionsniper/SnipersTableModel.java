@@ -5,9 +5,15 @@ import javax.swing.table.AbstractTableModel;
 import static auctionsniper.MainWindow.STATUS_JOINING;
 
 public class SnipersTableModel extends AbstractTableModel {
-    private final static SniperState STARTING_UP = new SniperState("", 0, 0);
-    private String statusText = STATUS_JOINING;
-    private SniperState sniperState = STARTING_UP;
+    private final static SniperSnapshot STARTING_UP =
+            new SniperSnapshot("", 0, 0, SniperState.JOINING);
+    private static String[] STATUS_TEXT  = {
+            MainWindow.STATUS_JOINING,
+            MainWindow.STATUS_BIDDING
+    };
+
+    private String state = STATUS_JOINING;
+    private SniperSnapshot snapshot = STARTING_UP;
 
     @Override
     public int getColumnCount() {
@@ -23,26 +29,26 @@ public class SnipersTableModel extends AbstractTableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (Column.at(columnIndex)) {
             case ITEM_IDENTIFIER:
-                return sniperState.itemId;
+                return snapshot.itemId;
             case LAST_PRICE:
-                return sniperState.lastPrice;
+                return snapshot.lastPrice;
             case LAST_BID:
-                return sniperState.lastBid;
-            case SNIPER_STATUS:
-                return statusText;
+                return snapshot.lastBid;
+            case SNIPER_STATE:
+                return state;
             default:
                 throw new IllegalArgumentException("No column at " + columnIndex);
         }
     }
 
     public void setStatusText(String newStatusText) {
-        statusText = newStatusText;
+        state = newStatusText;
         fireTableRowsUpdated(0, 0);
     }
 
-    public void sniperStatusChanged(SniperState newSniperState, String newStatusText) {
-        sniperState = newSniperState;
-        statusText = newStatusText;
+    public void sniperStateChanged(SniperSnapshot newSnapshot) {
+        this.snapshot = newSnapshot;
+        this.state = STATUS_TEXT[newSnapshot.state.ordinal()];
         fireTableRowsUpdated(0, 0);
     }
 }
