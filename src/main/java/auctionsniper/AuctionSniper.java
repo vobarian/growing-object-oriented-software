@@ -15,10 +15,11 @@ public class AuctionSniper implements AuctionEventListener {
     @Override
     public void auctionClosed() {
         if (isWinning) {
-            sniperListener.sniperWon();
+            snapshot = snapshot.won();
         } else {
-            sniperListener.sniperLost();
+            snapshot = snapshot.lost();
         }
+        sniperListener.sniperStateChanged(snapshot);
     }
 
     @Override
