@@ -16,7 +16,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static auctionsniper.SniperState.BIDDING;
+import static auctionsniper.SniperState.LOST;
 import static auctionsniper.SniperState.WINNING;
+import static auctionsniper.SniperState.WON;
 import static org.hamcrest.CoreMatchers.equalTo;
 
 @RunWith(JMock.class)
@@ -30,7 +32,8 @@ public class AuctionSniperTest {
 
     @Test public void reportsLostIfAuctionClosesImmediately() {
         context.checking(new Expectations() {{
-            atLeast(1).of(sniperListener).sniperLost();
+            atLeast(1).of(sniperListener).sniperStateChanged(
+                    new SniperSnapshot(ITEM_ID, 0, 0, LOST));
         }});
 
         sniper.auctionClosed();
@@ -71,8 +74,9 @@ public class AuctionSniperTest {
             ignoring(auction);
             allowing(sniperListener).sniperStateChanged(with(aSniperThatIs(BIDDING)));
                 then(sniperState.is("bidding"));
-            atLeast(1).of(sniperListener).sniperLost();
-                when(sniperState.is("bidding"));
+            atLeast(1).of(sniperListener).sniperStateChanged(
+                    new SniperSnapshot(ITEM_ID, 123, 123 + 45, LOST));
+            when(sniperState.is("bidding"));
         }});
 
         sniper.currentPrice(123, 45, PriceSource.FromOtherBidder);
@@ -82,13 +86,17 @@ public class AuctionSniperTest {
     @Test public void reportsWonIfAuctionClosesWhenWinning() {
         context.checking(new Expectations() {{
             ignoring(auction);
+            allowing(sniperListener).sniperStateChanged(with(aSniperThatIs(BIDDING)));
+                then(sniperState.is("bidding"));
             allowing(sniperListener).sniperStateChanged(with(aSniperThatIs(WINNING)));
                 then(sniperState.is("winning"));
-            atLeast(1).of(sniperListener).sniperWon();
-                when(sniperState.is("winning"));
+            atLeast(1).of(sniperListener).sniperStateChanged(
+                    new SniperSnapshot(ITEM_ID, 135, 135, WON));
+            when(sniperState.is("winning"));
         }});
 
-        sniper.currentPrice(123, 45, PriceSource.FromSniper);
+        sniper.currentPrice(123, 12, PriceSource.FromOtherBidder);
+        sniper.currentPrice(135, 45, PriceSource.FromSniper);
         sniper.auctionClosed();
     }
 
