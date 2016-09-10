@@ -2,18 +2,18 @@ package auctionsniper;
 
 import javax.swing.table.AbstractTableModel;
 
-import static auctionsniper.MainWindow.STATUS_JOINING;
-
 public class SnipersTableModel extends AbstractTableModel {
     private final static SniperSnapshot STARTING_UP =
             new SniperSnapshot("", 0, 0, SniperState.JOINING);
     private static String[] STATUS_TEXT  = {
             MainWindow.STATUS_JOINING,
             MainWindow.STATUS_BIDDING,
-            MainWindow.STATUS_WINNING
+            MainWindow.STATUS_WINNING,
+            MainWindow.STATUS_LOST,
+            MainWindow.STATUS_WON
     };
 
-    private String state = STATUS_JOINING;
+    private String state = MainWindow.STATUS_JOINING;
     private SniperSnapshot snapshot = STARTING_UP;
 
     @Override
