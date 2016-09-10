@@ -31,10 +31,6 @@ public class ApplicationRunner {
         driver.showsSniperStatus(textFor(SniperState.JOINING));
     }
 
-    public void hasShownSniperIsBidding() {
-        driver.showsSniperStatus(textFor(SniperState.BIDDING));
-    }
-
     public void hasShownSniperIsBidding(int lastPrice, int lastBid) {
         driver.showsSniperStatus(itemId, lastPrice, lastBid, textFor(SniperState.BIDDING));
     }
@@ -43,8 +39,8 @@ public class ApplicationRunner {
         driver.showsSniperStatus(itemId, winningBid, winningBid, textFor(SniperState.WINNING));
     }
 
-    public void showsSniperHasLostAuction() {
-        driver.showsSniperStatus(textFor(SniperState.LOST));
+    public void hasShownSniperHasLostAuction(int lastPrice, int lastBid) {
+        driver.showsSniperStatus(itemId, lastPrice, lastBid, textFor(SniperState.LOST));
     }
 
     public void showsSniperHasWonAuction(int lastPrice) {
