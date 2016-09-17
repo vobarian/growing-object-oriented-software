@@ -2,7 +2,7 @@ package auctionsniper;
 
 import javax.swing.table.AbstractTableModel;
 
-public class SnipersTableModel extends AbstractTableModel {
+public class SnipersTableModel extends AbstractTableModel implements SniperListener {
     private final static SniperSnapshot STARTING_UP =
             new SniperSnapshot("", 0, 0, SniperState.JOINING);
     private static String[] STATUS_TEXT  = {
@@ -26,7 +26,8 @@ public class SnipersTableModel extends AbstractTableModel {
         return Column.at(columnIndex).valueIn(snapshot);
     }
 
-    public void sniperStateChanged(SniperSnapshot newSnapshot) {
+    @Override
+    public void sniperStateChanged(final SniperSnapshot newSnapshot) {
         this.snapshot = newSnapshot;
         fireTableRowsUpdated(0, 0);
     }
