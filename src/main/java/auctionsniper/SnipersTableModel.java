@@ -35,4 +35,9 @@ public class SnipersTableModel extends AbstractTableModel implements SniperListe
     public static String textFor(SniperState state) {
         return STATUS_TEXT[state.ordinal()];
     }
+
+    @Override
+    public String getColumnName(int column) {
+        return Column.at(column).name;
+    }
 }
