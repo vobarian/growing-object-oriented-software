@@ -1,15 +1,14 @@
 package auctionsniper;
 
+import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
 public class SnipersTableModel extends AbstractTableModel implements SniperListener {
-    private final static SniperSnapshot STARTING_UP =
-            new SniperSnapshot("", 0, 0, SniperState.JOINING);
     private static String[] STATUS_TEXT  = {
             "Joining", "Bidding", "Winning", "Lost", "Won"
     };
 
-    private SniperSnapshot snapshot = STARTING_UP;
+    private ArrayList<SniperSnapshot> snapshots = new ArrayList<>();
 
     @Override
     public int getColumnCount() {
@@ -18,17 +17,17 @@ public class SnipersTableModel extends AbstractTableModel implements SniperListe
 
     @Override
     public int getRowCount() {
-        return 1;
+        return snapshots.size();
     }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        return Column.at(columnIndex).valueIn(snapshot);
+        return Column.at(columnIndex).valueIn(snapshots.get(0));
     }
 
     @Override
     public void sniperStateChanged(final SniperSnapshot newSnapshot) {
-        this.snapshot = newSnapshot;
+        snapshots.set(0, newSnapshot);
         fireTableRowsUpdated(0, 0);
     }
 
@@ -42,5 +41,8 @@ public class SnipersTableModel extends AbstractTableModel implements SniperListe
     }
 
     public void addSniper(SniperSnapshot joining) {
+        snapshots.add(joining);
+        int row = snapshots.size() - 1;
+        fireTableRowsInserted(row, row);
     }
 }
