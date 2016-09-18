@@ -1,6 +1,8 @@
 package test.auctionsniper;
 
+import auctionsniper.AuctionSniper;
 import auctionsniper.Column;
+import auctionsniper.Defect;
 import auctionsniper.MainWindow;
 import auctionsniper.SniperSnapshot;
 import auctionsniper.SniperState;
@@ -81,6 +83,29 @@ public class SnipersTableModelTest {
 
         assertEquals("item 0", cellValue(0, Column.ITEM_IDENTIFIER));
         assertEquals("item 1", cellValue(1, Column.ITEM_IDENTIFIER));
+    }
+
+    @Test public void updatesCorrectRowForSniper() {
+        SniperSnapshot joining = SniperSnapshot.joining("item 0");
+        SniperSnapshot joining2 = SniperSnapshot.joining("item 1");
+        SniperSnapshot bidding2 = joining2.bidding(200, 2);
+
+        context.checking(new Expectations() {{
+            allowing(listener).tableChanged(with(anyInsertionEvent()));
+            one(listener).tableChanged(with(aChangeInRow(1)));
+        }});
+
+        model.addSniper(joining);
+        model.addSniper(joining2);
+        model.sniperStateChanged(bidding2);
+
+        assertRowMatchesSnapshot(0, joining);
+        assertRowMatchesSnapshot(1, bidding2);
+    }
+
+    @Test(expected=Defect.class)
+    public void throwsDefectIfNoExistingSniperForAnUpdate() {
+        model.sniperStateChanged(new SniperSnapshot("item 1", 123, 234, SniperState.WINNING));
     }
 
     private void assertColumnEquals(Column column, Object expected) {

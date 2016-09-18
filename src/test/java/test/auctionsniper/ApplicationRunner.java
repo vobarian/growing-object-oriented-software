@@ -32,7 +32,7 @@ public class ApplicationRunner {
         driver.hasColumnTitles();
 
         for (FakeAuctionServer auction : auctions) {
-            driver.showsSniperStatus("", 0, 0, textFor(SniperState.JOINING));
+            driver.showsSniperStatus(auction.getItemId(), 0, 0, textFor(SniperState.JOINING));
         }
     }
 
