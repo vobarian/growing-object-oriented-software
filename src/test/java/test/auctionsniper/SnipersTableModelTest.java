@@ -19,6 +19,7 @@ import javax.swing.event.TableModelListener;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.samePropertyValuesAs;
+import static org.hamcrest.beans.HasPropertyWithValue.hasProperty;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(JMock.class)
@@ -36,16 +37,18 @@ public class SnipersTableModelTest {
     }
 
     @Test public void setsSniperValuesInColumns() {
+        SniperSnapshot joining = SniperSnapshot.joining("item id");
+        SniperSnapshot bidding = joining.bidding(555, 666);
+
         context.checking(new Expectations() {{
-            one(listener).tableChanged(with(aRowChangedEvent()));
+            allowing(listener).tableChanged(with(anyInsertionEvent()));
+            one(listener).tableChanged(with(aChangeInRow(0)));
         }});
 
-        model.sniperStateChanged(new SniperSnapshot("item id", 555, 666, SniperState.BIDDING));
+        model.addSniper(joining);
+        model.sniperStateChanged(bidding);
 
-        assertColumnEquals(Column.ITEM_IDENTIFIER, "item id");
-        assertColumnEquals(Column.LAST_PRICE, 555);
-        assertColumnEquals(Column.LAST_BID, 666);
-        assertColumnEquals(Column.SNIPER_STATE, SnipersTableModel.textFor(SniperState.BIDDING));
+        assertRowMatchesSnapshot(0, bidding);
     }
 
     @Test public void setsUpColumnHeadings() {
@@ -85,6 +88,10 @@ public class SnipersTableModelTest {
         return model.getValueAt(rowIndex, column.ordinal());
     }
 
+    Matcher<TableModelEvent> anyInsertionEvent() {
+        return hasProperty("type", equalTo(TableModelEvent.INSERT));
+    }
+
     private Matcher<TableModelEvent> aRowChangedEvent() {
         return samePropertyValuesAs(new TableModelEvent(model, 0));
     }
@@ -92,5 +99,9 @@ public class SnipersTableModelTest {
     private Matcher<TableModelEvent> anInsertionAtRow(final int row) {
         return samePropertyValuesAs(new TableModelEvent(model, row, row,
                 TableModelEvent.ALL_COLUMNS, TableModelEvent.INSERT));
+    }
+
+    private Matcher<TableModelEvent> aChangeInRow(int row) {
+        return samePropertyValuesAs(new TableModelEvent(model, row));
     }
 }
