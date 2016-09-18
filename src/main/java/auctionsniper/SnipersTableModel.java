@@ -40,4 +40,7 @@ public class SnipersTableModel extends AbstractTableModel implements SniperListe
     public String getColumnName(int column) {
         return Column.at(column).name;
     }
+
+    public void addSniper(SniperSnapshot joining) {
+    }
 }
