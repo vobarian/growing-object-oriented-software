@@ -53,4 +53,7 @@ public class MainWindow extends JFrame {
 
         return controls;
     }
+
+    public void addUserRequestListener(UserRequestListener userRequestListener) {
+    }
 }
