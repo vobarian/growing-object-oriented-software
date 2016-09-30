@@ -5,6 +5,7 @@ import auctionsniper.MainWindow;
 import auctionsniper.SnipersTableModel;
 import auctionsniper.UserRequestListener;
 import static org.hamcrest.CoreMatchers.equalTo;
+import org.junit.After;
 import org.junit.Test;
 
 public class MainWindowTest {
@@ -25,5 +26,9 @@ public class MainWindowTest {
 
         driver.startBiddingFor("an item-id");
         driver.check(buttonProbe);
+    }
+
+    @After public void disposeDriver() {
+        driver.dispose();
     }
 }
