@@ -1,6 +1,6 @@
 package test.endtoend.auctionsniper;
 
-import auctionsniper.Main;
+import auctionsniper.xmpp.XMPPAuction;
 import org.hamcrest.Matcher;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.ChatManagerListener;
@@ -14,8 +14,6 @@ import java.util.concurrent.TimeUnit;
 
 import static java.lang.String.format;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.beans.HasPropertyWithValue.hasProperty;
 
@@ -55,16 +53,16 @@ public class FakeAuctionServer {
 
     public void reportPrice(int price, int increment, String bidder) throws XMPPException {
         currentChat.sendMessage(format("SOLVersion: 1.1; Event: PRICE; " +
-                        "CurrentPrice: %d; Increment: %d; Bidder: %s;",
+                "CurrentPrice: %d; Increment: %d; Bidder: %s;",
                 price, increment, bidder));
     }
 
     public void hasReceivedJoinRequestFrom(String sniperId) throws InterruptedException {
-        receivesAMessageMatching(sniperId, equalTo(Main.JOIN_COMMAND_FORMAT));
+        receivesAMessageMatching(sniperId, equalTo(XMPPAuction.JOIN_COMMAND_FORMAT));
     }
 
     public void hasReceivedBid(int bid, String sniperId) throws InterruptedException {
-        receivesAMessageMatching(sniperId, equalTo(format(Main.BID_COMMAND_FORMAT, bid)));
+        receivesAMessageMatching(sniperId, equalTo(format(XMPPAuction.BID_COMMAND_FORMAT, bid)));
     }
 
     private void receivesAMessageMatching(String sniperId, Matcher<? super String> messageMatcher)
