@@ -9,6 +9,8 @@ import static java.lang.String.format;
 public class XMPPAuction implements Auction {
     public static final String ITEM_ID_AS_LOGIN = "auction-%s";
     public static final String AUCTION_ID_FORMAT = ITEM_ID_AS_LOGIN + "@%s/" + Main.AUCTION_RESOURCE;
+    public static final String JOIN_COMMAND_FORMAT = "SOLVersion: 1.1; Command: JOIN;";
+    public static final String BID_COMMAND_FORMAT = "SOLVersion: 1.1; Command: BID; Price: %d;";
 
     private final Announcer<AuctionEventListener> auctionEventListeners =
             Announcer.to(AuctionEventListener.class);
@@ -21,11 +23,11 @@ public class XMPPAuction implements Auction {
     }
 
     public void bid(int amount) {
-        sendMessage(format(Main.BID_COMMAND_FORMAT, amount));
+        sendMessage(format(BID_COMMAND_FORMAT, amount));
     }
 
     public void join() {
-        sendMessage(Main.JOIN_COMMAND_FORMAT);
+        sendMessage(JOIN_COMMAND_FORMAT);
     }
 
     @Override

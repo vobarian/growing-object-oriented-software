@@ -16,8 +16,6 @@ public class Main {
     private static final int ARG_PASSWORD = 2;
 
     public static final String AUCTION_RESOURCE = "Auction";
-    public static final String JOIN_COMMAND_FORMAT = "SOLVersion: 1.1; Command: JOIN;";
-    public static final String BID_COMMAND_FORMAT = "SOLVersion: 1.1; Command: BID; Price: %d;";
 
     private final SnipersTableModel snipers = new SnipersTableModel();
     private MainWindow ui;
