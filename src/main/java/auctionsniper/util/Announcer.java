@@ -1,6 +1,6 @@
 // From https://github.com/sf105/goos-code/blob/master/src/auctionsniper/util/Announcer.java
 
-package auctionsniper;
+package auctionsniper.util;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
