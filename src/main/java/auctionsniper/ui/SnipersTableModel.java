@@ -1,7 +1,11 @@
-package auctionsniper;
+package auctionsniper.ui;
 
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
+import auctionsniper.SniperListener;
+import auctionsniper.SniperSnapshot;
+import auctionsniper.SniperState;
+import auctionsniper.util.Defect;
 
 public class SnipersTableModel extends AbstractTableModel implements SniperListener {
     private static String[] STATUS_TEXT  = {

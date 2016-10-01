@@ -1,12 +1,12 @@
-package test.auctionsniper;
+package test.auctionsniper.ui;
 
 import auctionsniper.AuctionSniper;
-import auctionsniper.Column;
-import auctionsniper.Defect;
-import auctionsniper.MainWindow;
 import auctionsniper.SniperSnapshot;
 import auctionsniper.SniperState;
-import auctionsniper.SnipersTableModel;
+import auctionsniper.ui.Column;
+import auctionsniper.ui.MainWindow;
+import auctionsniper.ui.SnipersTableModel;
+import auctionsniper.util.Defect;
 import org.hamcrest.Matcher;
 import org.jmock.Expectations;
 import org.jmock.Mockery;

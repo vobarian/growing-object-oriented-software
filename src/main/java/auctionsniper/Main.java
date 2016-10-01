@@ -3,7 +3,8 @@ package auctionsniper;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
-
+import auctionsniper.ui.MainWindow;
+import auctionsniper.ui.SnipersTableModel;
 import javax.swing.SwingUtilities;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
