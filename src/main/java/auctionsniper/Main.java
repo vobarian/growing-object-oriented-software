@@ -5,6 +5,7 @@ import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import auctionsniper.ui.MainWindow;
 import auctionsniper.ui.SnipersTableModel;
+import auctionsniper.util.Announcer;
 import javax.swing.SwingUtilities;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -49,11 +50,15 @@ public class Main {
             public void joinAuction(String itemId) {
                 snipers.addSniper(SniperSnapshot.joining(itemId));
                 Chat chat = connection.getChatManager().createChat(auctionId(itemId, connection), null);
+                Announcer<AuctionEventListener> auctionEventListeners =
+                        Announcer.to(AuctionEventListener.class);
+                chat.addMessageListener(new AuctionMessageTranslator(connection.getUser(),
+                        auctionEventListeners.announce()));
                 notToBeGCd.add(chat);
 
                 Auction auction = new XMPPAuction(chat);
-                chat.addMessageListener(new AuctionMessageTranslator(connection.getUser(),
-                        new AuctionSniper(itemId, auction, new SwingThreadSniperListener(snipers))));
+                auctionEventListeners.addListener(
+                        new AuctionSniper(itemId, auction, new SwingThreadSniperListener(snipers)));
                 auction.join();
             }
         });
