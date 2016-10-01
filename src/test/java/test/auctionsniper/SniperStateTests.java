@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import auctionsniper.SniperState;
-import auctionsniper.Defect;
+import auctionsniper.util.Defect;
 
 public class SniperStateTests {
 

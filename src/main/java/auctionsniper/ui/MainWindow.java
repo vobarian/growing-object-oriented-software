@@ -1,4 +1,4 @@
-package auctionsniper;
+package auctionsniper.ui;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -7,6 +7,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.TableModel;
+import auctionsniper.UserRequestListener;
+import auctionsniper.util.Announcer;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
