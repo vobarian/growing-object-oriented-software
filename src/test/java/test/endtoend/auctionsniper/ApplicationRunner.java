@@ -1,10 +1,9 @@
-package test.auctionsniper;
+package test.endtoend.auctionsniper;
 
+import static auctionsniper.ui.SnipersTableModel.textFor;
 import auctionsniper.Main;
-import auctionsniper.MainWindow;
 import auctionsniper.SniperState;
-
-import static auctionsniper.SnipersTableModel.textFor;
+import auctionsniper.ui.MainWindow;
 
 public class ApplicationRunner {
     public static final String XMPP_HOSTNAME = "localhost";
