@@ -1,11 +1,59 @@
+/*
+  Explanation of test source sets and tasks:
+
+  Tests are broken into separate source sets for unit (test), integration (integrationTest), and
+  end-to-end (endToEndTest). Each inherits the dependencies of the one before it. Also, the output
+  classes of each set are added to the compile/runtime classpath of the following one. For example,
+  any class in the unit tests can be used in the integration tests and any class in the integration
+  tests can be used in the end-to-end tests, but not the other way around, and the same is true
+  for dependencies. There is also a task to run each set of tests, like so:
+
+  Run unit tests only:
+  	gradle clean test
+  Run integration tests only:
+    gradle clean integrationTest
+  Run end-to-end tests only:
+    gradle clean endToEndTest
+  Run all tests in order (unit first, then integration, then end-to-end):
+    gradle clean check
+  
+  Note that in the authors' sample code (https://github.com/sf105/goos-code/) AuctionSniperDriver appears
+  in the test/end-to-end folder. However, I had to move it to the integration test level because
+  MainWindowTest uses it.
+*/
+
 apply plugin: 'java'
+apply plugin: 'eclipse'
 
 repositories {
     jcenter()
 }
 
+sourceSets {
+    integrationTest {
+        java {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            srcDir file('src/integration/java')
+        }
+        resources.srcDir file('src/integration/resources')
+    }
+    endToEndTest {
+        java {
+            compileClasspath += main.output + test.output + integrationTest.output
+            runtimeClasspath += main.output + test.output + integrationTest.output
+            srcDir file('src/end-to-end/java')
+        }
+        resources.srcDir file('src/end-to-end/resources')
+    }
+}
+
 configurations {
     testCompile.exclude group: 'org.hamcrest', module: 'hamcrest-all'
+    integrationTestCompile.extendsFrom testCompile
+    integrationTestRuntime.extendsFrom testRuntime
+    endToEndTestCompile.extendsFrom integrationTestCompile
+    endToEndTestRuntime.extendsFrom integrationTestRuntime
 }
 
 dependencies {
@@ -15,9 +63,31 @@ dependencies {
 
     testCompile "junit:junit:4.12"
     testCompile 'org.hamcrest:hamcrest-library:1.3'
-
     testCompile "org.jmock:jmock-junit4:2.6.0"
 
-    testCompile "com.googlecode.windowlicker:windowlicker-core:r268"
-    testCompile "com.googlecode.windowlicker:windowlicker-swing:r268"
+    integrationTestCompile "com.googlecode.windowlicker:windowlicker-core:r268"
+    integrationTestCompile "com.googlecode.windowlicker:windowlicker-swing:r268"
 }
+
+task integrationTest(type: Test) {
+    testClassesDir = sourceSets.integrationTest.output.classesDir
+    classpath = sourceSets.integrationTest.runtimeClasspath
+	mustRunAfter tasks.test
+}
+
+task endToEndTest(type: Test) {
+	testClassesDir = sourceSets.endToEndTest.output.classesDir
+	classpath = sourceSets.endToEndTest.runtimeClasspath
+	mustRunAfter tasks.integrationTest
+}
+
+check.dependsOn integrationTest
+check.dependsOn endToEndTest
+
+tasks.withType(Test) {
+    reports.html.destination = file("${reporting.baseDir}/${name}")
+}
+
+eclipse.classpath {
+     plusConfigurations += configurations.integrationTestCompile
+ }

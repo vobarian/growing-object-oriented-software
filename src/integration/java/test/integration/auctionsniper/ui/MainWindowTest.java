@@ -1,9 +1,9 @@
-package test.auctionsniper;
+package test.integration.auctionsniper.ui;
 
 import com.objogate.wl.swing.probe.ValueMatcherProbe;
-import auctionsniper.MainWindow;
-import auctionsniper.SnipersTableModel;
 import auctionsniper.UserRequestListener;
+import auctionsniper.ui.MainWindow;
+import auctionsniper.ui.SnipersTableModel;
 import static org.hamcrest.CoreMatchers.equalTo;
 import org.junit.After;
 import org.junit.Test;
