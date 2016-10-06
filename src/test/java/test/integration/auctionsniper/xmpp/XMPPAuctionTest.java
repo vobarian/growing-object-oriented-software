@@ -1,4 +1,4 @@
-package test.auctionsniper;
+package test.integration.auctionsniper.xmpp;
 
 import java.util.concurrent.CountDownLatch;
 import org.jivesoftware.smack.XMPPConnection;
@@ -9,7 +9,7 @@ import org.junit.Test;
 import auctionsniper.Auction;
 import auctionsniper.AuctionEventListener;
 import auctionsniper.Main;
-import auctionsniper.XMPPAuction;
+import auctionsniper.xmpp.XMPPAuction;
 import test.endtoend.auctionsniper.ApplicationRunner;
 import test.endtoend.auctionsniper.FakeAuctionServer;
 import static java.util.concurrent.TimeUnit.SECONDS;
