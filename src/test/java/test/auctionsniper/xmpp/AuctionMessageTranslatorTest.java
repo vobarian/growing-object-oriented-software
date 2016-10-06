@@ -1,8 +1,8 @@
-package test.auctionsniper;
+package test.auctionsniper.xmpp;
 
 import auctionsniper.AuctionEventListener;
-import auctionsniper.AuctionMessageTranslator;
 import auctionsniper.AuctionEventListener.PriceSource;
+import auctionsniper.xmpp.AuctionMessageTranslator;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.packet.Message;
 import org.jmock.Expectations;
