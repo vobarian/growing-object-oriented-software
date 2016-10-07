@@ -1,10 +1,8 @@
 package test.auctionsniper.ui;
 
-import auctionsniper.AuctionSniper;
 import auctionsniper.SniperSnapshot;
 import auctionsniper.SniperState;
 import auctionsniper.ui.Column;
-import auctionsniper.ui.MainWindow;
 import auctionsniper.ui.SnipersTableModel;
 import auctionsniper.util.Defect;
 import org.hamcrest.Matcher;
