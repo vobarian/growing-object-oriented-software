@@ -11,7 +11,6 @@ import auctionsniper.ui.MainWindow;
 import static com.objogate.wl.swing.matcher.IterableComponentsMatcher.matching;
 import static com.objogate.wl.swing.matcher.JLabelTextMatcher.withLabelText;
 import static java.lang.String.valueOf;
-import static org.hamcrest.CoreMatchers.equalTo;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.table.JTableHeader;
