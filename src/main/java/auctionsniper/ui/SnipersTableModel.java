@@ -11,7 +11,7 @@ import auctionsniper.util.Defect;
 
 public class SnipersTableModel extends AbstractTableModel implements SniperListener, PortfolioListener {
     private static String[] STATUS_TEXT  = {
-            "Joining", "Bidding", "Winning", "Lost", "Won"
+            "Joining", "Bidding", "Winning", "Losing", "Lost", "Won"
     };
 
     private ArrayList<SniperSnapshot> snapshots = new ArrayList<>();
