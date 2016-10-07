@@ -17,6 +17,7 @@ public class SnipersTableModel extends AbstractTableModel implements SniperListe
     };
 
     private ArrayList<SniperSnapshot> snapshots = new ArrayList<>();
+    private final ArrayList<AuctionSniper> notToBeGCd = new ArrayList<>();
 
     @Override
     public int getColumnCount() {
@@ -39,7 +40,7 @@ public class SnipersTableModel extends AbstractTableModel implements SniperListe
         snapshots.set(row, newSnapshot);
         fireTableRowsUpdated(row, row);
     }
-    
+
     private int rowMatching(SniperSnapshot snapshot) {
         for (int i = 0; i < snapshots.size(); i++) {
             if (snapshot.isForSameItemAs(snapshots.get(i))) {
@@ -60,7 +61,9 @@ public class SnipersTableModel extends AbstractTableModel implements SniperListe
 
     @Override
     public void addSniper(AuctionSniper sniper) {
+        notToBeGCd.add(sniper);
         addSniperSnapshot(sniper.getSnapshot());
+        sniper.addSniperListener(new SwingThreadSniperListener(this));
     }
 
     private void addSniperSnapshot(SniperSnapshot sniperSnapshot) {
