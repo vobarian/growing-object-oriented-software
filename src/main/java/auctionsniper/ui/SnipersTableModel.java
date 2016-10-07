@@ -3,19 +3,18 @@ package auctionsniper.ui;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 import auctionsniper.AuctionSniper;
-import auctionsniper.SniperCollector;
 import auctionsniper.SniperListener;
 import auctionsniper.SniperSnapshot;
 import auctionsniper.SniperState;
+import auctionsniper.SniperPortfolio.PortfolioListener;
 import auctionsniper.util.Defect;
 
-public class SnipersTableModel extends AbstractTableModel implements SniperListener, SniperCollector {
+public class SnipersTableModel extends AbstractTableModel implements SniperListener, PortfolioListener {
     private static String[] STATUS_TEXT  = {
             "Joining", "Bidding", "Winning", "Lost", "Won"
     };
 
     private ArrayList<SniperSnapshot> snapshots = new ArrayList<>();
-    private final ArrayList<AuctionSniper> notToBeGCd = new ArrayList<>();
 
     @Override
     public int getColumnCount() {
@@ -58,8 +57,7 @@ public class SnipersTableModel extends AbstractTableModel implements SniperListe
     }
 
     @Override
-    public void addSniper(AuctionSniper sniper) {
-        notToBeGCd.add(sniper);
+    public void sniperAdded(AuctionSniper sniper) {
         addSniperSnapshot(sniper.getSnapshot());
         sniper.addSniperListener(new SwingThreadSniperListener(this));
     }
