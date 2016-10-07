@@ -2,12 +2,14 @@ package auctionsniper.ui;
 
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
+import auctionsniper.AuctionSniper;
+import auctionsniper.SniperCollector;
 import auctionsniper.SniperListener;
 import auctionsniper.SniperSnapshot;
 import auctionsniper.SniperState;
 import auctionsniper.util.Defect;
 
-public class SnipersTableModel extends AbstractTableModel implements SniperListener {
+public class SnipersTableModel extends AbstractTableModel implements SniperListener, SniperCollector {
     private final static SniperSnapshot STARTING_UP =
             new SniperSnapshot("", 0, 0, SniperState.JOINING);
     private static String[] STATUS_TEXT  = {
@@ -56,8 +58,13 @@ public class SnipersTableModel extends AbstractTableModel implements SniperListe
         return Column.at(column).name;
     }
 
-    public void addSniper(SniperSnapshot joining) {
-        snapshots.add(joining);
+    @Override
+    public void addSniper(AuctionSniper sniper) {
+        addSniperSnapshot(sniper.getSnapshot());
+    }
+
+    private void addSniperSnapshot(SniperSnapshot sniperSnapshot) {
+        snapshots.add(sniperSnapshot);
         int row = snapshots.size() - 1;
         fireTableRowsInserted(row, row);
     }
