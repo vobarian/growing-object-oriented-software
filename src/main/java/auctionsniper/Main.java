@@ -36,17 +36,7 @@ public class Main {
     }
 
     private void addUserRequestListenerFor(final AuctionHouse auctionHouse) {
-        ui.addUserRequestListener(new UserRequestListener() {
-            @Override
-            public void joinAuction(String itemId) {
-                snipers.addSniper(SniperSnapshot.joining(itemId));
-                Auction auction = auctionHouse.auctionFor(itemId);
-                notToBeGCd.add(auction);
-                auction.addAuctionEventListener(
-                        new AuctionSniper(itemId, auction, new SwingThreadSniperListener(snipers)));
-                auction.join();
-            }
-        });
+        ui.addUserRequestListener(new SniperLauncher(auctionHouse, snipers));
     }
 
     private void disconnectWhenUICloses(final XMPPAuctionHouse auctionHouse) {
@@ -56,23 +46,5 @@ public class Main {
                 auctionHouse.disconnect();
             }
         });
-    }
-
-    public class SwingThreadSniperListener implements SniperListener {
-        private final SniperListener delegate;
-
-        public SwingThreadSniperListener(SniperListener delegate) {
-            this.delegate = delegate;
-        }
-
-        @Override
-        public void sniperStateChanged(final SniperSnapshot snapshot) {
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    delegate.sniperStateChanged(snapshot);
-                }
-            });
-        }
     }
 }
