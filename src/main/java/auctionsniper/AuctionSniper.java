@@ -40,4 +40,8 @@ public class AuctionSniper implements AuctionEventListener {
     private void notifyChange() {
         listeners.announce().sniperStateChanged(snapshot);
     }
+
+    public SniperSnapshot getSnapshot() {
+        return snapshot;
+    }
 }
