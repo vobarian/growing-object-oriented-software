@@ -4,6 +4,7 @@ import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import auctionsniper.Auction;
 import auctionsniper.AuctionHouse;
+import auctionsniper.Item;
 
 public class XMPPAuctionHouse implements AuctionHouse {
     public static final String AUCTION_RESOURCE = "Auction";
@@ -16,8 +17,8 @@ public class XMPPAuctionHouse implements AuctionHouse {
         this.connection = connection;
     }
 
-    public Auction auctionFor(String itemId) {
-        return new XMPPAuction(connection, auctionId(itemId, connection));
+    public Auction auctionFor(Item item) {
+        return new XMPPAuction(connection, auctionId(item.identifier, connection));
     }
 
     public void disconnect() {
