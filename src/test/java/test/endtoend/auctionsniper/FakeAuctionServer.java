@@ -46,6 +46,10 @@ public class FakeAuctionServer {
                 });
     }
 
+    public void sendInvalidMessageContaining(String brokenMessage) throws XMPPException {
+        currentChat.sendMessage(brokenMessage);
+    }
+
     public String getItemId() {
         return itemId;
     }
