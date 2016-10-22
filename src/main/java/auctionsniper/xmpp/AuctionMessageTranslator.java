@@ -26,7 +26,7 @@ public class AuctionMessageTranslator implements MessageListener {
         }
     }
 
-    private void translate(String messageBody) {
+    private void translate(String messageBody) throws Exception {
         AuctionEvent event = AuctionEvent.from(messageBody);
 
         String eventType = event.type();
@@ -40,20 +40,26 @@ public class AuctionMessageTranslator implements MessageListener {
 
     private static class AuctionEvent {
         private final Map<String, String> fields = new HashMap<>();
-        public String type() { return get("Event"); }
-        public int currentPrice() { return getInt("CurrentPrice"); }
-        public int increment() { return getInt("Increment"); }
+        public String type() throws MissingValueException { return get("Event"); }
+        public int currentPrice() throws Exception { return getInt("CurrentPrice"); }
+        public int increment() throws Exception { return getInt("Increment"); }
 
-        public PriceSource isFrom(String sniperId) {
+        public PriceSource isFrom(String sniperId) throws MissingValueException {
             return sniperId.equals(bidder()) ? PriceSource.FromSniper : PriceSource.FromOtherBidder;
         }
-        private String bidder() { return get("Bidder"); }
+        private String bidder() throws MissingValueException { return get("Bidder"); }
 
-        private int getInt(String fieldName) {
+        private int getInt(String fieldName) throws Exception {
             return Integer.parseInt(get(fieldName));
         }
 
-        private String get(String fieldName) { return fields.get(fieldName); }
+        private String get(String fieldName) throws MissingValueException {
+            String value = fields.get(fieldName);
+            if (null == value) {
+                throw new MissingValueException(fieldName);
+            }
+            return value;
+        }
 
         private void addField(String field) {
             String[] pair = field.split(":");
@@ -70,6 +76,12 @@ public class AuctionMessageTranslator implements MessageListener {
 
         static String[] fieldsIn(String messageBody) {
             return messageBody.split(";");
+        }
+    }
+
+    private static class MissingValueException extends Exception {
+        public MissingValueException(String fieldName) {
+            super("Missing value for " + fieldName);
         }
     }
 }
