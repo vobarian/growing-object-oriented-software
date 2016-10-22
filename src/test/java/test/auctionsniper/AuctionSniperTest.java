@@ -171,6 +171,53 @@ public class AuctionSniperTest {
         sniper.auctionClosed();
     }
 
+    @Test public void reportsFailedIfAuctionFailsWhenBidding() {
+        ignoringAuction();
+        allowingSniperBidding();
+
+        expectSniperToFailWhenItIs("bidding");
+
+        sniper.currentPrice(123, 45, PriceSource.FromOtherBidder);
+        sniper.auctionFailed();
+    }
+
+    @Test public void reportsFailedIfAuctionFailsImmediately() {
+        context.checking(new Expectations() {{
+            atLeast(1).of(sniperListener).sniperStateChanged(SniperSnapshot.joining(ITEM_ID).failed());
+        }});
+
+        sniper.auctionFailed();
+    }
+
+    @Test public void reportsFailedIfAuctionFailsWhenLosing() {
+        allowingSniperLosing();
+
+        expectSniperToFailWhenItIs("losing");
+
+        sniper.currentPrice(1230, 456, PriceSource.FromOtherBidder);
+        sniper.auctionFailed();
+    }
+
+    @Test public void reportsFailedIfAuctionFailsWhenWinning() {
+        ignoringAuction();
+        allowingSniperBidding();
+        allowingSniperWinning();
+
+        expectSniperToFailWhenItIs("winning");
+
+        sniper.currentPrice(123, 12, PriceSource.FromOtherBidder);
+        sniper.currentPrice(135, 45, PriceSource.FromSniper);
+        sniper.auctionFailed();
+    }
+
+    private void expectSniperToFailWhenItIs(final String state) {
+        context.checking(new Expectations() {{
+            atLeast(1).of(sniperListener).sniperStateChanged(
+                    new SniperSnapshot(ITEM_ID, 0, 0, SniperState.FAILED));
+            when(sniperState.is(state));
+        }});
+    }
+
     private void ignoringAuction() {
         context.checking(new Expectations() {{
             ignoring(auction);
