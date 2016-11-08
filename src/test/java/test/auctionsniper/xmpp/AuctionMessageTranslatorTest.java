@@ -20,7 +20,8 @@ public class AuctionMessageTranslatorTest {
     private final Mockery context = new Mockery();
     private final XMPPFailureReporter failureReporter = context.mock(XMPPFailureReporter.class);
     private final AuctionEventListener listener = context.mock(AuctionEventListener.class);
-    private final AuctionMessageTranslator translator = new AuctionMessageTranslator(SNIPER_ID, listener);
+    private final AuctionMessageTranslator translator = new AuctionMessageTranslator(SNIPER_ID, listener,
+            failureReporter);
 
     @Test public void notifiesAuctionClosedWhenCloseMessageReceived() {
         context.checking(new Expectations() {{
