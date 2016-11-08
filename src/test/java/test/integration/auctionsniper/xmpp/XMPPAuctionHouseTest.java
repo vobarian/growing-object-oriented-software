@@ -8,6 +8,7 @@ import org.junit.Test;
 import auctionsniper.Auction;
 import auctionsniper.AuctionEventListener;
 import auctionsniper.Item;
+import auctionsniper.xmpp.XMPPAuctionException;
 import auctionsniper.xmpp.XMPPAuctionHouse;
 import test.endtoend.auctionsniper.ApplicationRunner;
 import test.endtoend.auctionsniper.FakeAuctionServer;
@@ -18,7 +19,7 @@ public class XMPPAuctionHouseTest {
     private final FakeAuctionServer auctionServer = new FakeAuctionServer("item-54321");
     private XMPPAuctionHouse auctionHouse;
 
-    @Before public void openConnection() throws XMPPException {
+    @Before public void openConnection() throws XMPPAuctionException {
         auctionHouse = XMPPAuctionHouse.connect(FakeAuctionServer.XMPP_HOSTNAME, ApplicationRunner.SNIPER_ID,
                 ApplicationRunner.SNIPER_PASSWORD);
     }
